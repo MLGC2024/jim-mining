@@ -178,6 +178,7 @@ RegisterNetEvent('jim-mining:openShop', function(data)
 	if Config.JimShops then event = "jim-shops:ShopOpen"
 	elseif Config.Inv == "ox" then  exports.ox_inventory:openInventory('shop', { type = 'miningShop' }) end
 	TriggerServerEvent(event, "shop", "miningShop", Config.Items)
+	TriggerEvent('wais:addmissionxp:buymine', 1) --added by pamela for wais battlepass
 	lookEnt(data.ped)
 end)
 
@@ -234,6 +235,7 @@ RegisterNetEvent('jim-mining:MineOre:Pick', function(data) local Ped = PlayerPed
 	end)
 	if progressBar({label = Loc[Config.Lan].info["drilling_ore"], time = Config.Debug and 1000 or Config.Timings["Pickaxe"], cancel = true, icon = "pickaxe"}) then
 		TriggerServerEvent('jim-mining:Reward', { mine = true, cost = nil })
+		TriggerEvent('wais:addmissionxp:pickaxemine', 1) --added by pamela for wais battlepass
 		if math.random(1,10) >= 9 then
 			local breakId = GetSoundId()
 			PlaySoundFromEntity(breakId, "Drill_Pin_Break", Ped, "DLC_HEIST_FLEECA_SOUNDSET", 1, 0)
@@ -280,6 +282,7 @@ RegisterNetEvent('jim-mining:MineOre:Drill', function(data) local Ped = PlayerPe
 		end)
 		if progressBar({label = Loc[Config.Lan].info["drilling_ore"], time = Config.Debug and 1000 or Config.Timings["Pickaxe"], cancel = true, icon = "pickaxe"}) then
 			TriggerServerEvent('jim-mining:Reward', { mine = true, cost = nil })
+			TriggerEvent('wais:addmissionxp:drillmine', 1) --added by pamela for wais battlepass
 			--Destroy drill bit chances
 			if math.random(1, 10) >= 8 then
 				local breakId = GetSoundId()
@@ -335,6 +338,7 @@ RegisterNetEvent('jim-mining:MineOre:Laser', function(data) local Ped = PlayerPe
 	end)
 	if progressBar({label = Loc[Config.Lan].info["drilling_ore"], time = Config.Debug and 1000 or Config.Timings["Laser"], cancel = true, icon = "mininglaser"}) then
 		TriggerServerEvent('jim-mining:Reward', { mine = true, cost = nil })
+		TriggerEvent('wais:addmissionxp:lasermine', 1) --added by pamela for wais battlepass
 		stoneBreak(data.name, data.stone)
 	end
 	IsDrilling = false
@@ -378,6 +382,7 @@ RegisterNetEvent('jim-mining:CrackStart', function(data) local Ped = PlayerPedId
 		TaskPlayAnim(Ped, dict, anim, 3.0, 3.0, -1, 1, 0, false, false, false)
 		if progressBar({label = Loc[Config.Lan].info["cracking_stone"], time = Config.Debug and 1000 or Config.Timings["Cracking"], cancel = true, icon = "stone"}) then
 			TriggerServerEvent('jim-mining:Reward', { crack = true, cost = cost })
+			TriggerEvent('wais:addmissionxp:mine', 1) --added by pamela for wais battlepass
 		end
 		StopAnimTask(Ped, dict, anim, 1.0)
 		unloadDrillSound()
@@ -416,6 +421,7 @@ RegisterNetEvent('jim-mining:WashStart', function(data) local Ped = PlayerPedId(
 		end)
 		if progressBar({label = Loc[Config.Lan].info["washing_stone"], time = Config.Debug and 1000 or Config.Timings["Washing"], cancel = true, icon = "stone"}) then
 			TriggerServerEvent('jim-mining:Reward', { wash = true, cost = cost })
+			TriggerEvent('wais:addmissionxp:washstone', 1) --added by pamela for wais battlepass
 		end
 		lockInv(false)
 		StopParticleFxLooped(water, 0)
@@ -448,6 +454,7 @@ RegisterNetEvent('jim-mining:PanStart', function(data) local Ped = PlayerPedId()
 	TaskStartScenarioInPlace(Ped, "CODE_HUMAN_MEDIC_KNEEL", 0, true)
 	if progressBar({label = Loc[Config.Lan].info["goldpanning"], time = Config.Debug and 1000 or Config.Timings["Panning"], cancel = true, icon = "goldpan"}) then
 		TriggerServerEvent('jim-mining:Reward', { pan = true, cost = nil })
+		TriggerEvent('wais:addmissionxp:pangold', 1) --added by pamela for wais battlepass
 	end
 	ClearPedTasksImmediately(Ped)
 	destroyProp(Props[#Props])
@@ -467,6 +474,7 @@ RegisterNetEvent('jim-mining:SellAnim', function(data) local Ped = PlayerPedId()
 	end
 	loadAnimDict("mp_common")
 	TriggerServerEvent('jim-mining:Selling', data) -- Had to slip in the sell command during the animation command
+	TriggerEvent('wais:addmissionxp:sellmine', 1) --added by pamela for wais battlepass
 	loadAnimDict("mp_common")
 	lookEnt(data.ped)
 	TaskPlayAnim(Ped, "mp_common", "givetake2_a", 100.0, 200.0, 0.3, 1, 0.2, 0, 0, 0)	--Start animations
@@ -705,6 +713,7 @@ RegisterNetEvent('jim-mining:Crafting:MakeItem', function(data) local bartext, a
 	end
 	if progressBar({ label = bartext, time = Config.Debug and 2000 or bartime, cancel = true, dict = animDictNow, anim = animNow, flag = 8, icon = data.item }) then
 		TriggerServerEvent('jim-mining:Crafting:GetItem', data.item, data.craft)
+		TriggerEvent('wais:addmissionxp:craftmine', 1) --added by pamela for wais battlepass
 		if data.ret then
 			if math.random(1, 1000) <= 75 then
 				local breakId = GetSoundId()
